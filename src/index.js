@@ -17,41 +17,68 @@ const axios = require('axios'),
 let API_KEY; // To be set by clients
 
 class SWYPDentalAPI {
-  constructor (apiKey) {
-    if (!apiKey) throw new Error('No API key specified');
-    API_KEY = apiKey;
-    this.v2 = {
-      topHeadlines (...args) {
-        const { params = { language: 'en' }, options, cb } = splitArgsIntoOptionsAndCallback(args);
-        const url = createUrlFromEndpointAndOptions('/v2/top-headlines', params);
-        return getDataFromWeb(url, options, API_KEY, cb);
-      },
+  constructor () {
+    // if (!apiKey) throw new Error('No API key specified');
+    // API_KEY = apiKey;
 
-      everything (...args) {
-        const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
-        const url = createUrlFromEndpointAndOptions('/v2/everything', params);
-        return getDataFromWeb(url, options, API_KEY, cb);
-      },
-
-      sources (...args) {
-        const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
-        const url = createUrlFromEndpointAndOptions('/v2/sources', params);
-        return getDataFromWeb(url, options, API_KEY, cb);
-      }
-    }
+    //version based APIs
+    // this.v1 = {
+    //   topHeadlines (...args) {
+    //     const { params = { language: 'en' }, options, cb } = splitArgsIntoOptionsAndCallback(args);
+    //     const url = createUrlFromEndpointAndOptions('/v2/top-headlines', params);
+    //     return getDataFromWeb(url, options, API_KEY, cb);
+    //   },
+    // }
   }
 
-  sources (...args) {
+  getAPIKey (...args) {
     const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
-    const url = createUrlFromEndpointAndOptions('/v1/sources', params);
+    const url = createUrlFromEndpointAndOptions('/swyp/developers/account', params);
     return getDataFromWeb(url, options, null, cb);
   }
 
-  articles (...args) {
+  getArchivedFeeds (...args) {
     const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
-    const url = createUrlFromEndpointAndOptions('/v1/articles', params);
-    return getDataFromWeb(url, options, API_KEY, cb);
+    const url = createUrlFromEndpointAndOptions('/swyp/feeds/archived', params);
+    return getDataFromWeb(url, options, null, cb);
   }
+
+  getDailyDigestFeeds (...args) {
+    const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
+    const url = createUrlFromEndpointAndOptions('/swyp/feeds/daily-digest', params);
+    return getDataFromWeb(url, options, null, cb);
+  }
+
+  getSWYPCategories (...args) {
+    const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
+    const url = createUrlFromEndpointAndOptions('/swyp/categories/list', params);
+    return getDataFromWeb(url, options, null, cb);
+  }
+
+  getCategorizedFeeds (...args) {
+    const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
+    const url = createUrlFromEndpointAndOptions('/swyp/categories/{CATEGORY_ID}/feeds', params);
+    return getDataFromWeb(url, options, null, cb);
+  }
+
+  getBrandedMagazines (...args) {
+    const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
+    const url = createUrlFromEndpointAndOptions('/swyp/magazines/list', params);
+    return getDataFromWeb(url, options, null, cb);
+  }
+
+  getBrandedMagazinesFeeds (...args) {
+    const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
+    const url = createUrlFromEndpointAndOptions('/swyp/magazines/{MAGAZINE_ID}/feeds', params);
+    return getDataFromWeb(url, options, null, cb);
+  }
+
+  getSWYPOriginalFeeds (...args) {
+    const { params, options, cb } = splitArgsIntoOptionsAndCallback(args);
+    const url = createUrlFromEndpointAndOptions('/swyp/feeds/swyp-originals', params);
+    return getDataFromWeb(url, options, null, cb);
+  }
+
 }
 
 class SWYPDentalAPIError extends Error {
